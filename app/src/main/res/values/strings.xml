@@ -1,0 +1,15 @@
+<resources>
+    <string name="app_name">English Grammer Cheatsheet</string>
+    <string name="english_cheatsheet">ENGLISH CHEATSHEET</string>
+    <string name="gmail_address">codingliteapps@gmail.com</string>
+    <string name="dashboard">Dashboard</string>
+    <string name="about_me">About me</string>
+    <string name="note">Note</string>
+    <string name="others">Others</string>
+    <string name="feedback">Feedback</string>
+    <string name="share">Share</string>
+    <string name="rate_this_app">Rate This App</string>
+    <string name="privacy_policy">Privacy Policy</string>
+    <string name="open">Open</string>
+    <string name="close">Close</string>
+</resources>
