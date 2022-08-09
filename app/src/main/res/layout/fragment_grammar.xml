@@ -3,12 +3,12 @@
     xmlns:tools="http://schemas.android.com/tools"
     android:layout_width="match_parent"
     android:layout_height="match_parent"
-    tools:context=".GrammerFragment">
+    tools:context=".presentation.grammar.GrammarFragment">
 
-    <!-- TODO: Update blank fragment layout -->
-    <TextView
+    <androidx.recyclerview.widget.RecyclerView
+        android:id="@+id/rv_grammar_content"
         android:layout_width="match_parent"
         android:layout_height="match_parent"
-        android:text="grammar" />
+        tools:listitem="@layout/content_item" />
 
 </FrameLayout>

@@ -1,9 +1,11 @@
 package com.amir.englishgrammercheatsheet
 
-import android.content.Intent
 import android.os.Bundle
-import androidx.appcompat.app.ActionBarDrawerToggle
+import androidx.fragment.app.FragmentManager
+
 import com.amir.englishgrammercheatsheet.databinding.ActivityMainBinding
+import com.amir.englishgrammercheatsheet.presentation.grammar.GrammarFragment
+import com.amir.englishgrammercheatsheet.presentation.note.NoteFragment
 
 class MainActivity : BaseActivity() {
     private lateinit var binding: ActivityMainBinding
@@ -16,7 +18,8 @@ class MainActivity : BaseActivity() {
         navigationDrawableDisplayingSetUp(this, binding.drawerLayout, binding.toolbar)
 
         binding.rbGrammar.setOnClickListener {
-          loadFragment(GrammerFragment())
+          loadFragment(GrammarFragment())
+
             binding.rbNote.isChecked = false
 
 
@@ -26,11 +29,13 @@ class MainActivity : BaseActivity() {
             loadFragment(NoteFragment())
             binding.rbGrammar.isChecked = false
 
-
         }
 
     }
 
-
+    override fun onStart() {
+        loadFragment(GrammarFragment())
+        super.onStart()
+    }
 
 }

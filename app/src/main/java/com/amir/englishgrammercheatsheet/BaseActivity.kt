@@ -1,15 +1,11 @@
 package com.amir.englishgrammercheatsheet
 
-import android.app.Activity
-import android.content.Context
+
 import androidx.appcompat.app.AppCompatActivity
-import android.os.Bundle
-import android.widget.FrameLayout
-import android.widget.Toolbar
 import androidx.appcompat.app.ActionBarDrawerToggle
 import androidx.drawerlayout.widget.DrawerLayout
 import androidx.fragment.app.Fragment
-import androidx.fragment.app.FragmentActivity
+
 
 open class BaseActivity : AppCompatActivity() {
     //navigation display
@@ -41,5 +37,8 @@ open class BaseActivity : AppCompatActivity() {
         transaction.commit()
 
     }
+
+    //GrammarFragment as first open fragment
+
 
 }

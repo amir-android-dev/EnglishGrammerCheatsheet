@@ -1,12 +1,11 @@
-package com.amir.englishgrammercheatsheet
+package com.amir.englishgrammercheatsheet.presentation.note
 
 import android.os.Bundle
 import androidx.fragment.app.Fragment
 import android.view.LayoutInflater
 import android.view.View
 import android.view.ViewGroup
-
-
+import com.amir.englishgrammercheatsheet.R
 
 
 class NoteFragment : Fragment() {

@@ -22,7 +22,7 @@
         <FrameLayout
             android:id="@+id/fr_layout"
             android:layout_width="match_parent"
-            android:layout_height="wrap_content"
+            android:layout_height="0dp"
             app:layout_constraintBottom_toTopOf="@id/rd_group"
             app:layout_constraintTop_toBottomOf="@id/toolbar" />
 
@@ -37,7 +37,8 @@
                 android:layout_width="match_parent"
                 android:layout_height="wrap_content"
                 android:orientation="horizontal"
-                app:layout_constraintBottom_toBottomOf="parent">
+                app:layout_constraintBottom_toBottomOf="parent"
+                tools:ignore="UselessParent">
 
                 <RadioButton
                     android:id="@+id/rb_grammar"
@@ -49,7 +50,7 @@
                     android:button="@null"
                     android:checked="true"
                     android:gravity="center"
-                    android:text="GRAMMAR"
+                    android:text="@string/grammar"
                     android:textColor="@drawable/drawable_units_tab_text_color_selector"
                     android:textSize="16sp"
                     android:textStyle="bold" />
@@ -64,7 +65,7 @@
                     android:button="@null"
                     android:checked="false"
                     android:gravity="center"
-                    android:text="Notes"
+                    android:text="@string/notes"
                     android:textColor="@drawable/drawable_units_tab_text_color_selector"
                     android:textSize="16sp"
                     android:textStyle="bold" />
