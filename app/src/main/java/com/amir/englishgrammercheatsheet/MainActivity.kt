@@ -1,10 +1,12 @@
 package com.amir.englishgrammercheatsheet
 
 import android.os.Bundle
-import androidx.fragment.app.FragmentManager
+import android.widget.Toast
 
 import com.amir.englishgrammercheatsheet.databinding.ActivityMainBinding
-import com.amir.englishgrammercheatsheet.presentation.grammar.GrammarFragment
+import com.amir.englishgrammercheatsheet.presentation.IOnBackPressed
+import com.amir.englishgrammercheatsheet.presentation.content.ContentFragment
+import com.amir.englishgrammercheatsheet.presentation.grammer.GrammarFragment
 import com.amir.englishgrammercheatsheet.presentation.note.NoteFragment
 
 class MainActivity : BaseActivity() {
@@ -18,11 +20,8 @@ class MainActivity : BaseActivity() {
         navigationDrawableDisplayingSetUp(this, binding.drawerLayout, binding.toolbar)
 
         binding.rbGrammar.setOnClickListener {
-          loadFragment(GrammarFragment())
-
+          loadFragment(ContentFragment())
             binding.rbNote.isChecked = false
-
-
 
         }
         binding.rbNote.setOnClickListener {
@@ -34,8 +33,15 @@ class MainActivity : BaseActivity() {
     }
 
     override fun onStart() {
-        loadFragment(GrammarFragment())
+        loadFragment(ContentFragment())
         super.onStart()
+    }
+
+    override fun onBackPressed() {
+        val fragment = this.supportFragmentManager.findFragmentById(R.id.ll_fragment_content_container)
+        (fragment as? IOnBackPressed)?.onBackPressed()?.not()?.let {
+            super.onBackPressed()
+        }
     }
 
 }

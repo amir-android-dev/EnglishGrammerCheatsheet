@@ -1,3 +1,5 @@
 package com.amir.englishgrammercheatsheet.data.model
 
-data class ContentsModel(val title: String, val image: Int)
+import java.io.Serializable
+
+data class ContentsModel(val id:Int,val title: String, val image: Int):Serializable

@@ -4,18 +4,26 @@
     android:layout_width="match_parent"
     android:layout_height="match_parent"
     android:orientation="vertical"
-    tools:context=".presentation.grammer.GrammarFragment">
+    android:id="@+id/ll_fragment_content_container"
+    tools:context=".presentation.content.ContentFragment">
 
+    <androidx.recyclerview.widget.RecyclerView
+        android:id="@+id/rv_grammar_content"
+        android:layout_width="match_parent"
+        android:layout_height="match_parent"
+        tools:listitem="@layout/content_item" />
 
     <TextView
-        android:id="@+id/rv_grammar_title"
+        android:id="@+id/tv_grammar_title"
         android:layout_width="match_parent"
         android:layout_height="wrap_content"
+        android:visibility="gone"
         android:text="@string/hello_blank_fragment" />
     <TextView
-        android:id="@+id/rv_grammar_description"
+        android:id="@+id/tv_grammar_description"
         android:layout_width="match_parent"
         android:layout_height="wrap_content"
+        android:visibility="gone"
         android:text="@string/hello_blank_fragment" />
 
 </LinearLayout>
