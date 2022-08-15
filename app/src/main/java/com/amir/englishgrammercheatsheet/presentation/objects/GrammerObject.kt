@@ -3,16 +3,37 @@ package com.amir.englishgrammercheatsheet.presentation.objects
 import com.amir.englishgrammercheatsheet.data.model.GrammarModel
 
 object GrammerObject {
+    operator fun invoke(toString: String, toString1: String): Any {
+        val grammar1 =GrammarModel("title 1","des 1")
 
-    val grammar1 =GrammarModel(1,"title 1","des 1")
+        val grammar2 =GrammarModel("title 2","des 2")
 
-    val grammar2 =GrammarModel(2,"title 2","des 2")
+        val grammar3 =GrammarModel("title 3","des 3")
 
-    val grammar3 =GrammarModel(3,"title 3","des 3")
+        val grammar4 =GrammarModel("title 4","des 4")
 
-    val grammar4 =GrammarModel(4,"title 4","des 4")
+        val grammar5 =GrammarModel("title 5","des 5")
+        return grammar1
+    }
 
-    val grammar5 =GrammarModel(5,"title 5","des 5")
+    val grammar1 =GrammarModel("title 1","des 1")
+
+    val grammar2 =GrammarModel("title 2","des 2")
+
+    val grammar3 =GrammarModel("title 3","des 3")
+
+    val grammar4 =GrammarModel("title 4","des 4")
+
+    val grammar5 =GrammarModel("title 5","des 5")
+//    val grammar1 =GrammarModel("1","title 1","des 1")
+//
+//    val grammar2 =GrammarModel(2,"title 2","des 2")
+//
+//    val grammar3 =GrammarModel(3,"title 3","des 3")
+//
+//    val grammar4 =GrammarModel(4,"title 4","des 4")
+//
+//    val grammar5 =GrammarModel(5,"title 5","des 5")
 
 //    fun getGrammar():ArrayList<GrammarModel>{
 //

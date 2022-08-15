@@ -1,13 +1,16 @@
 package com.amir.englishgrammercheatsheet
 
 
+import android.content.Intent
+import android.view.MenuItem
 import androidx.appcompat.app.AppCompatActivity
 import androidx.appcompat.app.ActionBarDrawerToggle
 import androidx.drawerlayout.widget.DrawerLayout
 import androidx.fragment.app.Fragment
+import com.google.android.material.navigation.NavigationView
 
 
-open class BaseActivity : AppCompatActivity() {
+open class BaseActivity : AppCompatActivity()  {
     //navigation display
     fun navigationDrawableDisplayingSetUp(
         activity: AppCompatActivity,
@@ -38,7 +41,28 @@ open class BaseActivity : AppCompatActivity() {
 
     }
 
-    //GrammarFragment as first open fragment
+    //sharing app
+     fun sharingApp() {
+        val sendIntent: Intent = Intent().apply {
+            action = Intent.ACTION_SEND
+            putExtra(
+                Intent.EXTRA_TEXT, "Hey! Download the best English Grammar Cheatsheet.\n " +
+                        "https://play.google.com/store/apps/details?id=com.amir.deutscheGrammatikCheatsheet"
+            )
+            type = "text/plain"
+
+        }
+        startActivity(sendIntent)
+    }
+
+
+
+
+
+
+
+    //navigation item selected
+
 
 
 }

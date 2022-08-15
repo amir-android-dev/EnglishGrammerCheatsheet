@@ -2,30 +2,30 @@
 <menu xmlns:android="http://schemas.android.com/apk/res/android">
 
     <item
-        android:id="@+id/item_header_dashboard"
+        android:id="@+id/item_nav_dashboard"
         android:icon="@drawable/ic_home"
         android:title="@string/dashboard" />
     <item
-        android:id="@+id/item_header_developer"
+        android:id="@+id/item_nav_developer"
         android:icon="@drawable/ic_person"
         android:title="@string/about_me" />
     <item
-        android:id="@+id/item_header_note"
+        android:id="@+id/item_nav_note"
         android:icon="@drawable/ic_note"
         android:title="@string/note" />
 
     <item android:title="@string/others">
         <menu>
             <item
-                android:id="@+id/item_header_feedback"
+                android:id="@+id/item_nav_feedback"
                 android:icon="@drawable/ic_feedback_24"
                 android:title="@string/feedback" />
             <item
-                android:id="@+id/item_header_share"
+                android:id="@+id/item_nav_share"
                 android:icon="@drawable/ic_share_24"
                 android:title="@string/share" />
             <item
-                android:id="@+id/item_header_rate"
+                android:id="@+id/item_nav_rate"
                 android:icon="@drawable/ic_rate"
                 android:title="@string/rate_this_app" />
             <item

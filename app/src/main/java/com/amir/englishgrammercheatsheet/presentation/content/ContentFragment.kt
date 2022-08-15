@@ -15,14 +15,15 @@ import com.amir.englishgrammercheatsheet.R
 import com.amir.englishgrammercheatsheet.data.model.ContentsModel
 import com.amir.englishgrammercheatsheet.databinding.FragmentContentBinding
 import com.amir.englishgrammercheatsheet.presentation.IOnBackPressed
+import com.amir.englishgrammercheatsheet.presentation.MViewModel
 import com.amir.englishgrammercheatsheet.presentation.grammer.GrammarFragment
 
 import com.amir.englishgrammercheatsheet.presentation.objects.ContentObject
 import com.amir.englishgrammercheatsheet.presentation.objects.GrammerObject
 
 
-class ContentFragment : Fragment(),IOnBackPressed {
-
+class ContentFragment : Fragment(), IOnBackPressed {
+    lateinit var viewModel: MViewModel
     private lateinit var binding: FragmentContentBinding
     private val contentList = ContentObject.contentsModel
 
@@ -38,6 +39,7 @@ class ContentFragment : Fragment(),IOnBackPressed {
 
     override fun onViewCreated(view: View, savedInstanceState: Bundle?) {
         super.onViewCreated(view, savedInstanceState)
+        viewModel = (activity as MainActivity).mViewModel
         setupRecyclerView()
     }
 
@@ -104,12 +106,12 @@ class ContentFragment : Fragment(),IOnBackPressed {
     }
 
     override fun onBackPressed(): Boolean {
-        return if(   binding.rvGrammarContent.visibility == View.GONE){
+        return if (binding.rvGrammarContent.visibility == View.GONE) {
             binding.tvGrammarTitle.visibility = View.GONE
             binding.tvGrammarDescription.visibility = View.GONE
             binding.rvGrammarContent.visibility = View.VISIBLE
             true
-        }else{
+        } else {
             true
         }
     }
