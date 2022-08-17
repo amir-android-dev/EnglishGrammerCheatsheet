@@ -9,16 +9,11 @@ import android.view.View
 import android.view.ViewGroup
 import androidx.lifecycle.Observer
 import androidx.lifecycle.ViewModelProvider
-import androidx.lifecycle.lifecycleScope
-import androidx.recyclerview.widget.GridLayoutManager
-import androidx.recyclerview.widget.LinearLayoutManager
-import androidx.recyclerview.widget.StaggeredGridLayoutManager
-import com.amir.englishgrammercheatsheet.MainActivity
+import androidx.recyclerview.widget.*
 import com.amir.englishgrammercheatsheet.NoteActivity
-import com.amir.englishgrammercheatsheet.R
 import com.amir.englishgrammercheatsheet.databinding.FragmentNoteBinding
 import com.amir.englishgrammercheatsheet.room.*
-import kotlinx.coroutines.launch
+import com.amir.englishgrammercheatsheet.swiping.SwipeToEditCallback
 
 class NoteFragment : Fragment() {
     lateinit var binding: FragmentNoteBinding
@@ -53,6 +48,7 @@ class NoteFragment : Fragment() {
         model.getSavedNotes().observe(viewLifecycleOwner, Observer {
             Log.i("My Tag", it.toString() + "\n")
             binding.rvNote.adapter = NoteAdapter(it)
+            swipeToUpdate(it)
         })
     }
     fun setUpRecyclerView() {
@@ -62,5 +58,20 @@ class NoteFragment : Fragment() {
         displaySubscribersList()
     }
 
+    fun swipeToUpdate(noteEntity: List<NoteEntity>){
+        val swipeToEditCallback = object : SwipeToEditCallback(requireContext()) {
+            override fun onSwiped(viewHolder: RecyclerView.ViewHolder, direction: Int) {
+
+                //sending data to NoteActivity
+                val intent = Intent(requireActivity(),NoteActivity::class.java)
+                intent.putExtra("title",noteEntity[viewHolder.adapterPosition].title)
+                intent.putExtra("description",noteEntity[viewHolder.adapterPosition].description)
+                startActivity(intent)
+
+            }
+        }
+        val itemTouchHelper = ItemTouchHelper(swipeToEditCallback)
+        itemTouchHelper.attachToRecyclerView(binding.rvNote)
+    }
 
 }
