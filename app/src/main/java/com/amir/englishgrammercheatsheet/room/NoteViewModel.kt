@@ -26,8 +26,8 @@ class NoteViewModel(private val repository: NoteRepository) : ViewModel() {
         val title = inputTitle.value!!
         val description = inputDescription.value!!
         insert(NoteEntity(0, title, description))
-        inputTitle.value = ""
-        inputDescription.value = ""
+        //inputTitle.value = ""
+       // inputDescription.value = ""
     }
 
     fun insert(noteEntity: NoteEntity): Job = viewModelScope.launch {

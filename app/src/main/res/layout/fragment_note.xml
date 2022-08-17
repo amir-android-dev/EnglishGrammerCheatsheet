@@ -6,11 +6,14 @@
     android:layout_height="match_parent"
     tools:context=".presentation.note.NoteFragment">
 
-    <!-- TODO: Update blank fragment layout -->
-    <TextView
+
+    <androidx.recyclerview.widget.RecyclerView
+        android:id="@+id/rv_note"
         android:layout_width="match_parent"
-        android:layout_height="wrap_content"
+        android:layout_height="0dp"
         android:text="note"
+        android:layout_margin="10dp"
+        app:layout_constraintBottom_toTopOf="@id/fl_btn"
         app:layout_constraintStart_toStartOf="parent"
         app:layout_constraintTop_toTopOf="parent" />
 

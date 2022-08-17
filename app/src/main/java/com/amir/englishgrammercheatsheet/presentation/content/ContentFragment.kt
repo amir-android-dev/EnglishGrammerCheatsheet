@@ -23,7 +23,7 @@ import com.amir.englishgrammercheatsheet.presentation.objects.GrammerObject
 
 
 class ContentFragment : Fragment(), IOnBackPressed {
-    lateinit var viewModel: MViewModel
+
     private lateinit var binding: FragmentContentBinding
     private val contentList = ContentObject.contentsModel
 
@@ -39,7 +39,7 @@ class ContentFragment : Fragment(), IOnBackPressed {
 
     override fun onViewCreated(view: View, savedInstanceState: Bundle?) {
         super.onViewCreated(view, savedInstanceState)
-        viewModel = (activity as MainActivity).mViewModel
+
         setupRecyclerView()
     }
 

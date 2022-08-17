@@ -9,17 +9,18 @@ import com.amir.englishgrammercheatsheet.presentation.IOnBackPressed
 import com.amir.englishgrammercheatsheet.presentation.MViewModel
 import com.amir.englishgrammercheatsheet.presentation.content.ContentFragment
 import com.amir.englishgrammercheatsheet.presentation.note.NoteFragment
+import com.amir.englishgrammercheatsheet.room.NoteViewModel
 import com.google.android.material.navigation.NavigationView
 
 class MainActivity : BaseActivity(), NavigationView.OnNavigationItemSelectedListener {
     private lateinit var binding: ActivityMainBinding
-    lateinit var mViewModel: MViewModel
+    lateinit var noteViewModel: NoteViewModel
     override fun onCreate(savedInstanceState: Bundle?) {
         super.onCreate(savedInstanceState)
         binding = ActivityMainBinding.inflate(layoutInflater)
         setContentView(binding.root)
 //mViewModel
-        mViewModel = ViewModelProvider(this).get(MViewModel::class.java)
+      //  noteViewModel = ViewModelProvider(this).get(NoteViewModel::class.java)
 //toolbar
         toolbarDisplayingSetUp(binding.toolbar, "Grammar Cheatsheet")
         //navigation drawable

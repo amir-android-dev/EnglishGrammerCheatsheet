@@ -14,7 +14,7 @@ import com.amir.englishgrammercheatsheet.room.NoteViewModelFactory
 
 class NoteActivity : AppCompatActivity() {
     lateinit var binding: ActivityNoteBinding
-    private lateinit var viewModel: NoteViewModel
+     lateinit var viewModel: NoteViewModel
     override fun onCreate(savedInstanceState: Bundle?) {
         super.onCreate(savedInstanceState)
 //        binding = ActivityNoteBinding.inflate(layoutInflater)
