@@ -5,12 +5,13 @@ import android.content.Intent
 import android.view.MenuItem
 import androidx.appcompat.app.AppCompatActivity
 import androidx.appcompat.app.ActionBarDrawerToggle
+import androidx.appcompat.widget.Toolbar
 import androidx.drawerlayout.widget.DrawerLayout
 import androidx.fragment.app.Fragment
 import com.google.android.material.navigation.NavigationView
 
 
-open class BaseActivity : AppCompatActivity()  {
+open class BaseActivity : AppCompatActivity() {
     //navigation display
     fun navigationDrawableDisplayingSetUp(
         activity: AppCompatActivity,
@@ -31,7 +32,7 @@ open class BaseActivity : AppCompatActivity()  {
 
     //loadFragment
     fun loadFragment(fragment: Fragment) {
-      //  val grammarFragment = GrammerFragment()
+        //  val grammarFragment = GrammerFragment()
         fragment.arguments = intent.extras
         val transaction = supportFragmentManager.beginTransaction()
         //transaction.add(R.id.fr_layout, fragment)
@@ -41,7 +42,7 @@ open class BaseActivity : AppCompatActivity()  {
     }
 
     //sharing app
-     fun sharingApp() {
+    fun sharingApp() {
         val sendIntent: Intent = Intent().apply {
             action = Intent.ACTION_SEND
             putExtra(
@@ -49,19 +50,12 @@ open class BaseActivity : AppCompatActivity()  {
                         "https://play.google.com/store/apps/details?id=com.amir.deutscheGrammatikCheatsheet"
             )
             type = "text/plain"
-
         }
         startActivity(sendIntent)
     }
 
 
-
-
-
-
-
     //navigation item selected
-
 
 
 }
