@@ -12,20 +12,13 @@ import com.amir.englishgrammercheatsheet.presentation.note.NoteFragment
 import com.amir.englishgrammercheatsheet.room.NoteViewModel
 import com.google.android.material.navigation.NavigationView
 
-class MainActivity : BaseActivity(), NavigationView.OnNavigationItemSelectedListener {
+class MainActivity : BaseActivity() {
     private lateinit var binding: ActivityMainBinding
-    lateinit var noteViewModel: NoteViewModel
+
     override fun onCreate(savedInstanceState: Bundle?) {
         super.onCreate(savedInstanceState)
         binding = ActivityMainBinding.inflate(layoutInflater)
         setContentView(binding.root)
-//mViewModel
-      //  noteViewModel = ViewModelProvider(this).get(NoteViewModel::class.java)
-//toolbar
-        toolbarDisplayingSetUp(binding.toolbar, "Grammar Cheatsheet")
-        //navigation drawable
-        navigationDrawableDisplayingSetUp(this, binding.drawerLayout, binding.toolbar)
-        binding.navigationMenu.setNavigationItemSelectedListener(this)
 
         binding.rbGrammar.setOnClickListener {
             loadFragment(ContentFragment())
@@ -35,10 +28,7 @@ class MainActivity : BaseActivity(), NavigationView.OnNavigationItemSelectedList
         binding.rbNote.setOnClickListener {
             loadFragment(NoteFragment())
             binding.rbGrammar.isChecked = false
-
         }
-
-
     }
 
     override fun onStart() {
@@ -54,34 +44,7 @@ class MainActivity : BaseActivity(), NavigationView.OnNavigationItemSelectedList
         }
     }
 
-    override fun onNavigationItemSelected(item: MenuItem): Boolean {
-        when(item.itemId){
-            R.id.item_nav_dashboard ->{
-                binding.drawerLayout.closeDrawers()
-            }
-            R.id.item_nav_developer->{
 
-            }
-            R.id.item_nav_note ->{
-
-            }
-            R.id.item_nav_rate->{
-
-            }
-
-            R.id.item_nav_feedback->{
-
-            }
-            R.id.item_nav_share->{
-                sharingApp()
-            }
-            R.id.item_privacy_policy->{
-
-            }
-        }
-
-        return true
-    }
 
 
 }

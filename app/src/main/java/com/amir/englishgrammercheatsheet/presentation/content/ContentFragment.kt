@@ -1,28 +1,24 @@
 package com.amir.englishgrammercheatsheet.presentation.content
 
-import android.content.Intent
-import android.opengl.Visibility
 import android.os.Bundle
-import androidx.fragment.app.Fragment
 import android.view.LayoutInflater
+import android.view.MenuItem
 import android.view.View
 import android.view.ViewGroup
-import android.widget.Toast
-import androidx.fragment.app.FragmentActivity
 import androidx.recyclerview.widget.LinearLayoutManager
 import com.amir.englishgrammercheatsheet.MainActivity
 import com.amir.englishgrammercheatsheet.R
 import com.amir.englishgrammercheatsheet.data.model.ContentsModel
 import com.amir.englishgrammercheatsheet.databinding.FragmentContentBinding
 import com.amir.englishgrammercheatsheet.presentation.IOnBackPressed
-import com.amir.englishgrammercheatsheet.presentation.MViewModel
-import com.amir.englishgrammercheatsheet.presentation.grammer.GrammarFragment
+import com.amir.englishgrammercheatsheet.presentation.grammer.BaseFragment
 
 import com.amir.englishgrammercheatsheet.presentation.objects.ContentObject
 import com.amir.englishgrammercheatsheet.presentation.objects.GrammerObject
+import com.google.android.material.navigation.NavigationView
 
 
-class ContentFragment : Fragment(), IOnBackPressed {
+class ContentFragment : BaseFragment(), IOnBackPressed, NavigationView.OnNavigationItemSelectedListener{
 
     private lateinit var binding: FragmentContentBinding
     private val contentList = ContentObject.contentsModel
@@ -41,6 +37,13 @@ class ContentFragment : Fragment(), IOnBackPressed {
         super.onViewCreated(view, savedInstanceState)
 
         setupRecyclerView()
+        //toolbar
+        toolbarDisplayingSetUp(binding.toolbar,R.menu.bar_note_fragment, "Grammar")
+        //display navigation
+        navigationDrawableDisplayingSetUp(MainActivity(),binding.drawerLayoutContentFragment,binding.toolbar)
+        //making navigation clickAble
+        binding.navigationMenu.setNavigationItemSelectedListener(this)
+
     }
 
     private fun setupRecyclerView() {
@@ -52,11 +55,8 @@ class ContentFragment : Fragment(), IOnBackPressed {
     }
 
     private fun listItemClicked(contentsModel: ContentsModel) {
-        // Toast.makeText(activity, "Select ${contentsModel.title}", Toast.LENGTH_SHORT).show()
 //https://stackoverflow.com/questions/16036572/how-to-pass-values-between-fragments
-//        val intent = Intent(activity?.baseContext,MainActivity::class.java)
-//        intent.putExtra("msg","hi")
-//        activity?.startActivity(intent)
+
         binding.tvGrammarTitle.visibility = View.VISIBLE
         binding.tvGrammarDescription.visibility = View.VISIBLE
         binding.rvGrammarContent.visibility = View.GONE
@@ -105,6 +105,35 @@ class ContentFragment : Fragment(), IOnBackPressed {
 
     }
 
+
+    override fun onNavigationItemSelected(item: MenuItem): Boolean {
+        when(item.itemId){
+            R.id.item_nav_dashboard ->{
+                binding.drawerLayoutContentFragment.closeDrawers()
+            }
+            R.id.item_nav_developer->{
+
+            }
+            R.id.item_nav_note ->{
+
+            }
+            R.id.item_nav_rate->{
+
+            }
+
+            R.id.item_nav_feedback->{
+
+            }
+            R.id.item_nav_share->{
+                sharingApp()
+            }
+            R.id.item_privacy_policy->{
+
+            }
+        }
+        return true
+    }
+
     override fun onBackPressed(): Boolean {
         return if (binding.rvGrammarContent.visibility == View.GONE) {
             binding.tvGrammarTitle.visibility = View.GONE
@@ -115,7 +144,6 @@ class ContentFragment : Fragment(), IOnBackPressed {
             true
         }
     }
-
 
 }
 

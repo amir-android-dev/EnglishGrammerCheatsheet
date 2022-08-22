@@ -37,6 +37,13 @@ class NoteViewModel(private val repository: NoteRepository) : ViewModel() {
             //inputTitle.value = ""
             // inputDescription.value = ""
         }
+
+    }
+
+    fun toUpdate(){
+        noteEntityToUpdate.title = inputTitle.value!!
+        noteEntityToUpdate.description = inputDescription.value!!
+        update(noteEntityToUpdate)
     }
     fun initUpdate(noteEntity: NoteEntity){
         inputTitle.value = noteEntity.title

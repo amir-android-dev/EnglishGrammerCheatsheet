@@ -6,7 +6,11 @@
     android:layout_height="match_parent"
     tools:context=".presentation.note.NoteFragment">
 
-
+<androidx.appcompat.widget.Toolbar
+    android:id="@+id/toolbar_note"
+    android:layout_width="match_parent"
+    android:layout_height="wrap_content"
+    app:layout_constraintTop_toTopOf="parent"/>
     <androidx.recyclerview.widget.RecyclerView
         android:id="@+id/rv_note"
         android:layout_width="match_parent"
@@ -15,7 +19,7 @@
         android:layout_margin="10dp"
         app:layout_constraintBottom_toTopOf="@id/fl_btn"
         app:layout_constraintStart_toStartOf="parent"
-        app:layout_constraintTop_toTopOf="parent" />
+        app:layout_constraintTop_toBottomOf="@id/toolbar_note" />
 
     <com.google.android.material.floatingactionbutton.FloatingActionButton
         android:id="@+id/fl_btn"

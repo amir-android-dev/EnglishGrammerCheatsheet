@@ -7,10 +7,7 @@ import androidx.databinding.DataBindingUtil
 import androidx.lifecycle.Observer
 import androidx.lifecycle.ViewModelProvider
 import com.amir.englishgrammercheatsheet.databinding.ActivityNoteBinding
-import com.amir.englishgrammercheatsheet.room.NoteDatabase
-import com.amir.englishgrammercheatsheet.room.NoteRepository
-import com.amir.englishgrammercheatsheet.room.NoteViewModel
-import com.amir.englishgrammercheatsheet.room.NoteViewModelFactory
+import com.amir.englishgrammercheatsheet.room.*
 
 class NoteActivity : AppCompatActivity() {
     lateinit var binding: ActivityNoteBinding
@@ -31,21 +28,23 @@ class NoteActivity : AppCompatActivity() {
             onBackPressed()
         }
         displaySubscribersList()
-
     }
 
     private fun displaySubscribersList() {
         viewModel.getSavedNotes().observe(this, Observer {
             Log.i("My Tag", it.toString() + "\n")
-            recvieveSendedDataFromNoteFragmentToUpdate()
+            receiveSentDataFromNoteFragmentToUpdate()
         })
     }
 
-    fun recvieveSendedDataFromNoteFragmentToUpdate(){
+    private fun receiveSentDataFromNoteFragmentToUpdate():Unit{
+
         val titleFromNoteFragment  = intent.getStringExtra("title")
         val descriptionFromNoteFragment  = intent.getStringExtra("description")
         binding.etTitle.setText(titleFromNoteFragment)
         binding.etDescription.setText(descriptionFromNoteFragment)
+        viewModel.saveOrUpdateButtonText.value = "Update"
+       // viewModel.initUpdate()
     }
 
 }

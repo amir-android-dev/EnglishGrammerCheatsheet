@@ -1,29 +1,49 @@
 <?xml version="1.0" encoding="utf-8"?>
-<LinearLayout xmlns:android="http://schemas.android.com/apk/res/android"
+<androidx.drawerlayout.widget.DrawerLayout xmlns:android="http://schemas.android.com/apk/res/android"
+    xmlns:app="http://schemas.android.com/apk/res-auto"
     xmlns:tools="http://schemas.android.com/tools"
+    android:id="@+id/drawerLayout_content_fragment"
     android:layout_width="match_parent"
     android:layout_height="match_parent"
-    android:orientation="vertical"
-    android:id="@+id/ll_fragment_content_container"
     tools:context=".presentation.content.ContentFragment">
 
-    <androidx.recyclerview.widget.RecyclerView
-        android:id="@+id/rv_grammar_content"
+    <LinearLayout
+        android:id="@+id/ll_fragment_content_container"
         android:layout_width="match_parent"
         android:layout_height="match_parent"
-        tools:listitem="@layout/content_item" />
+        android:orientation="vertical">
 
-    <TextView
-        android:id="@+id/tv_grammar_title"
-        android:layout_width="match_parent"
-        android:layout_height="wrap_content"
-        android:visibility="gone"
-        android:text="@string/hello_blank_fragment" />
-    <TextView
-        android:id="@+id/tv_grammar_description"
-        android:layout_width="match_parent"
-        android:layout_height="wrap_content"
-        android:visibility="gone"
-        android:text="@string/hello_blank_fragment" />
+        <androidx.appcompat.widget.Toolbar
+            android:id="@+id/toolbar"
+            android:layout_width="match_parent"
+            android:layout_height="wrap_content" />
 
-</LinearLayout>
+        <androidx.recyclerview.widget.RecyclerView
+            android:id="@+id/rv_grammar_content"
+            android:layout_width="match_parent"
+            android:layout_height="match_parent"
+            tools:listitem="@layout/content_item" />
+
+        <TextView
+            android:id="@+id/tv_grammar_title"
+            android:layout_width="match_parent"
+            android:layout_height="wrap_content"
+            android:text="@string/hello_blank_fragment"
+            android:visibility="gone" />
+
+        <TextView
+            android:id="@+id/tv_grammar_description"
+            android:layout_width="match_parent"
+            android:layout_height="wrap_content"
+            android:text="@string/hello_blank_fragment"
+            android:visibility="gone" />
+    </LinearLayout>
+
+    <com.google.android.material.navigation.NavigationView
+        android:id="@+id/navigation_menu"
+        android:layout_width="match_parent"
+        android:layout_height="match_parent"
+        android:layout_gravity="start"
+        app:headerLayout="@layout/menu_header"
+        app:menu="@menu/navigation_drawer_main_activity" />
+</androidx.drawerlayout.widget.DrawerLayout>
