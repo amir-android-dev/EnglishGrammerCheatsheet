@@ -9,7 +9,9 @@ import android.view.View
 import android.view.ViewGroup
 import androidx.appcompat.app.ActionBarDrawerToggle
 import androidx.appcompat.app.AppCompatActivity
+import androidx.appcompat.widget.Toolbar
 import androidx.drawerlayout.widget.DrawerLayout
+import com.amir.englishgrammercheatsheet.MainActivity
 import com.amir.englishgrammercheatsheet.R
 import com.amir.englishgrammercheatsheet.databinding.FragmentGrammarBinding
 import com.google.android.material.navigation.NavigationView
@@ -32,9 +34,12 @@ open class BaseFragment : Fragment() {
 
 
     //setup toolbar
-    fun toolbarDisplayingSetUp(toolbar: androidx.appcompat.widget.Toolbar, menuId: Int, title:String) {
+    fun toolbarDisplayingSetUpWithMenu(toolbar: androidx.appcompat.widget.Toolbar, menuId: Int, title:String) {
         toolbar.inflateMenu(menuId)
         toolbar.title = title
+    }
+    fun toolbarDisplayingSetUpWithoutMennu(toolbar: Toolbar, title: String) {
+
     }
 
 

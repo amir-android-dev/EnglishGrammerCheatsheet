@@ -5,7 +5,6 @@ import android.util.Log
 import android.view.Menu
 import android.view.MenuItem
 import android.widget.Toast
-import androidx.databinding.DataBindingUtil
 import androidx.lifecycle.Observer
 import androidx.lifecycle.ViewModelProvider
 import com.amir.englishgrammercheatsheet.databinding.ActivityNoteBinding
@@ -23,10 +22,9 @@ class NoteActivity : BaseActivity() {
 
         //implement viewModel
         implementViewModel()
+        //implement toolbar
         toolbarDisplayingSetUp(binding.toolbar, "notepad")
-
-
-
+        //show the list oft notes
         displaySubscribersList()
     }
 
@@ -47,13 +45,12 @@ class NoteActivity : BaseActivity() {
         // viewModel.initUpdate()
     }
 
-    fun implementViewModel() {
+    private fun implementViewModel() {
         // start implement viewModel
         dao = NoteDatabase.getInstance(application).noteDAO
          repository = NoteRepository(dao)
          factory = NoteViewModelFactory(repository)
         noteViewModel = ViewModelProvider(this, factory).get(NoteViewModel::class.java)
-
         //end of viewModel Implement
     }
 

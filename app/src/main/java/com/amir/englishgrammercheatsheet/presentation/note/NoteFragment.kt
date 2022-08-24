@@ -1,28 +1,28 @@
 package com.amir.englishgrammercheatsheet.presentation.note
 
-
 import android.app.AlertDialog
 import android.content.Intent
 import android.os.Bundle
 import android.util.Log
 import android.view.*
-import androidx.fragment.app.Fragment
+import android.widget.Toast
+import androidx.appcompat.widget.Toolbar
 import androidx.lifecycle.Observer
 import androidx.lifecycle.ViewModelProvider
 import androidx.recyclerview.widget.*
 import com.amir.englishgrammercheatsheet.NoteActivity
 import com.amir.englishgrammercheatsheet.R
 import com.amir.englishgrammercheatsheet.databinding.FragmentNoteBinding
+import com.amir.englishgrammercheatsheet.presentation.grammer.BaseFragment
 import com.amir.englishgrammercheatsheet.room.*
-import com.amir.englishgrammercheatsheet.swiping.SwipeToDeleteCallBack
 import com.amir.englishgrammercheatsheet.swiping.SwipeToEditCallback
 
-class NoteFragment : Fragment() {
+class NoteFragment : BaseFragment(), Toolbar.OnMenuItemClickListener {
     lateinit var binding: FragmentNoteBinding
     lateinit var dao: NoteDAO
     lateinit var repository: NoteRepository
     lateinit var factory: NoteViewModelFactory
-    lateinit var model: NoteViewModel
+    lateinit var viewModel: NoteViewModel
     override fun onCreateView(
         inflater: LayoutInflater, container: ViewGroup?,
         savedInstanceState: Bundle?
@@ -33,13 +33,11 @@ class NoteFragment : Fragment() {
 
     override fun onViewCreated(view: View, savedInstanceState: Bundle?) {
         super.onViewCreated(view, savedInstanceState)
-        dao = NoteDatabase.getInstance(requireActivity().application).noteDAO
-        repository = NoteRepository(dao)
-        factory = NoteViewModelFactory(repository)
-        model = ViewModelProvider(requireActivity(), factory).get(NoteViewModel::class.java)
 
-        binding.toolbarNote.inflateMenu(R.menu.bar_note_fragment)
-
+        //binding.toolbarNote.inflateMenu(R.menu.bar_note_fragment)
+        toolbarDisplayingSetUpWithMenu(binding.toolbarNote, R.menu.bar_note_fragment, "")
+        binding.toolbarNote.setOnMenuItemClickListener(this)
+        implementViewModel()
         floatButtonAction()
         setUpRecyclerView()
     }
@@ -56,12 +54,19 @@ class NoteFragment : Fragment() {
 //        val repository = NoteRepository(dao)
 //        val factory = NoteViewModelFactory(repository)
 //        val model = ViewModelProvider(requireActivity(), factory).get(NoteViewModel::class.java)
-        model.getSavedNotes().observe(viewLifecycleOwner, Observer {
+        viewModel.getSavedNotes().observe(viewLifecycleOwner, Observer {
             Log.i("My Tag", it.toString() + "\n")
             binding.rvNote.adapter = NoteAdapter(it)
             swipeToUpdate(it)
-            swipeToDelete()
+
         })
+    }
+
+    private fun implementViewModel() {
+        dao = NoteDatabase.getInstance(requireActivity().application).noteDAO
+        repository = NoteRepository(dao)
+        factory = NoteViewModelFactory(repository)
+        viewModel = ViewModelProvider(requireActivity(), factory).get(NoteViewModel::class.java)
     }
 
     private fun setUpRecyclerView() {
@@ -79,36 +84,33 @@ class NoteFragment : Fragment() {
                 intent.putExtra("title", noteEntity[viewHolder.adapterPosition].title)
                 intent.putExtra("description", noteEntity[viewHolder.adapterPosition].description)
                 startActivity(intent)
-
             }
         }
         val itemTouchHelper = ItemTouchHelper(swipeToEditCallback)
         itemTouchHelper.attachToRecyclerView(binding.rvNote)
     }
 
-    private fun swipeToDelete() {
-        val swipeToDeleteCallback = object : SwipeToDeleteCallBack(requireContext()) {
-            override fun onSwiped(viewHolder: RecyclerView.ViewHolder, direction: Int) {
-
-                ViewModelProvider(requireActivity(), factory).get(NoteViewModel::class.java)
+    override fun onMenuItemClick(item: MenuItem?): Boolean {
+        when (item?.itemId) {
+            R.id.action_deleteAll -> {
                 val builder = AlertDialog.Builder(requireActivity())
-                builder.setTitle("Delete Note")
+                builder.setTitle("Delete All")
                 builder.setIcon(R.drawable.ic_dangerous_24)
-                builder.setPositiveButton("Yes") { dialogInterFace, _ ->
-                    {
-
-                    }
-                    dialogInterFace.dismiss()
+                builder.setPositiveButton("Yes") { dialogInterface, _ ->
+                    viewModel.clearAll()
+                    dialogInterface.dismiss()
                 }
+                builder.setNegativeButton("No") { dialogInterface, _ ->
+                    dialogInterface.dismiss()
+                }
+                val alertDialog = builder.create()
+                alertDialog.setCancelable(false)
+                alertDialog.show()
+
+
             }
         }
-        val itemTouchHelper = ItemTouchHelper(swipeToDeleteCallback)
-        itemTouchHelper.attachToRecyclerView(binding.rvNote)
-    }
-
-    override fun onCreateOptionsMenu(menu: Menu, inflater: MenuInflater) {
-        super.onCreateOptionsMenu(menu, inflater)
-        inflater.inflate(R.menu.bar_note_fragment, menu)
+        return false
     }
 
 }

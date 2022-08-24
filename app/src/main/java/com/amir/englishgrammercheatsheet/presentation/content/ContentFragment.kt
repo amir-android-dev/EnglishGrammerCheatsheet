@@ -38,7 +38,7 @@ class ContentFragment : BaseFragment(), IOnBackPressed, NavigationView.OnNavigat
 
         setupRecyclerView()
         //toolbar
-        toolbarDisplayingSetUp(binding.toolbar,R.menu.bar_note_fragment, "Grammar")
+       // toolbarDisplayingSetUp(binding.toolbar,0, "Grammar")
         //display navigation
         navigationDrawableDisplayingSetUp(MainActivity(),binding.drawerLayoutContentFragment,binding.toolbar)
         //making navigation clickAble
