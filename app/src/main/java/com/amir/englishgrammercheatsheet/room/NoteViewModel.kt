@@ -5,68 +5,46 @@ import androidx.lifecycle.MutableLiveData
 import androidx.lifecycle.ViewModel
 import androidx.lifecycle.liveData
 import androidx.lifecycle.viewModelScope
+import com.amir.englishgrammercheatsheet.Event
 import kotlinx.coroutines.Job
-import kotlinx.coroutines.flow.collect
 import kotlinx.coroutines.launch
+import kotlin.properties.Delegates
 
 class NoteViewModel(private val repository: NoteRepository) : ViewModel() {
 
+    private val statusMessage = MutableLiveData<Event<String>>()
 
     val inputTitle = MutableLiveData<String>()
     val inputDescription = MutableLiveData<String>()
-    private var isUpdated = false
+
     private lateinit var noteEntityToUpdate: NoteEntity
 
-    val saveOrUpdateButtonText = MutableLiveData<String>()
-    val cancelButton = MutableLiveData<String>()
-
-    init {
-        saveOrUpdateButtonText.value = "Save"
-        cancelButton.value = "Cancel"
-    }
 
     fun saveOrUpdate() {
-        if (isUpdated){
-            noteEntityToUpdate.title = inputTitle.value!!
-            noteEntityToUpdate.description = inputDescription.value!!
-            update(noteEntityToUpdate)
-        }else{
-            val title = inputTitle.value!!
-            val description = inputDescription.value!!
-            insert(NoteEntity(0, title, description))
-            //inputTitle.value = ""
-            // inputDescription.value = ""
-        }
+        val title = inputTitle.value!!
+        val description = inputDescription.value!!
+        insert(NoteEntity(0, title, description))
+        inputTitle.value = ""
+        inputDescription.value = ""
 
     }
 
-    fun toUpdate(){
-        noteEntityToUpdate.title = inputTitle.value!!
-        noteEntityToUpdate.description = inputDescription.value!!
-        update(noteEntityToUpdate)
-    }
-    fun initUpdate(noteEntity: NoteEntity){
-        inputTitle.value = noteEntity.title
-        inputDescription.value = noteEntity.description
-        isUpdated = true
-        noteEntityToUpdate = noteEntity
-        saveOrUpdateButtonText.value = "Update"
-    }
 
     fun insert(noteEntity: NoteEntity): Job = viewModelScope.launch {
-        repository.insert(noteEntity)
+        val newRowId: Long = repository.insert(noteEntity)
+        if (newRowId > -1) {
+            statusMessage.value = Event("Subscriber inserted successfully $newRowId")
+        } else {
+            statusMessage.value = Event("Error Occurred")
+        }
     }
 
     @SuppressLint("NullSafeMutableLiveData")
     fun update(noteEntity: NoteEntity): Job = viewModelScope.launch {
         repository.update(noteEntity)
-        inputTitle.value = null
-        inputDescription.value = null
-        isUpdated = false
-        noteEntityToUpdate = noteEntity
-
     }
 
+    @SuppressLint("NullSafeMutableLiveData")
     fun delete(noteEntity: NoteEntity): Job = viewModelScope.launch {
         repository.delete(noteEntity)
     }

@@ -23,6 +23,7 @@ class NoteFragment : BaseFragment(), Toolbar.OnMenuItemClickListener {
     lateinit var repository: NoteRepository
     lateinit var factory: NoteViewModelFactory
     lateinit var viewModel: NoteViewModel
+    lateinit var adapter : NoteAdapter
     override fun onCreateView(
         inflater: LayoutInflater, container: ViewGroup?,
         savedInstanceState: Bundle?
@@ -62,25 +63,22 @@ class NoteFragment : BaseFragment(), Toolbar.OnMenuItemClickListener {
         })
     }
 
-    private fun implementViewModel() {
-        dao = NoteDatabase.getInstance(requireActivity().application).noteDAO
-        repository = NoteRepository(dao)
-        factory = NoteViewModelFactory(repository)
-        viewModel = ViewModelProvider(requireActivity(), factory).get(NoteViewModel::class.java)
-    }
-
+ //set RecyclerView
     private fun setUpRecyclerView() {
         //  binding.rvNote.layoutManager = LinearLayoutManager(activity)
         // binding.rvNote.layoutManager = StaggeredGridLayoutManager(2,StaggeredGridLayoutManager.VERTICAL)
+
         binding.rvNote.layoutManager = GridLayoutManager(activity, 2)
         displaySubscribersList()
     }
 
+    //swipe to update
     private fun swipeToUpdate(noteEntity: List<NoteEntity>) {
         val swipeToEditCallback = object : SwipeToEditCallback(requireContext()) {
             override fun onSwiped(viewHolder: RecyclerView.ViewHolder, direction: Int) {
                 //sending data to NoteActivity
                 val intent = Intent(requireActivity(), NoteActivity::class.java)
+                intent.putExtra("id",noteEntity[viewHolder.adapterPosition].id.toString())
                 intent.putExtra("title", noteEntity[viewHolder.adapterPosition].title)
                 intent.putExtra("description", noteEntity[viewHolder.adapterPosition].description)
                 startActivity(intent)
@@ -106,13 +104,17 @@ class NoteFragment : BaseFragment(), Toolbar.OnMenuItemClickListener {
                 val alertDialog = builder.create()
                 alertDialog.setCancelable(false)
                 alertDialog.show()
-
-
             }
         }
         return false
     }
 
+    private fun implementViewModel() {
+        dao = NoteDatabase.getInstance(requireActivity().application).noteDAO
+        repository = NoteRepository(dao)
+        factory = NoteViewModelFactory(repository)
+        viewModel = ViewModelProvider(requireActivity(), factory).get(NoteViewModel::class.java)
+    }
 }
 
 

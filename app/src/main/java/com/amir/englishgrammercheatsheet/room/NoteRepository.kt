@@ -4,7 +4,7 @@ class NoteRepository(private val dao: NoteDAO) {
 
     val notes = dao.getAllNotes()
 
-    suspend fun insert(noteEntity: NoteEntity) {
+    suspend fun insert(noteEntity: NoteEntity):Long {
         return dao.insertNote(noteEntity)
     }
 

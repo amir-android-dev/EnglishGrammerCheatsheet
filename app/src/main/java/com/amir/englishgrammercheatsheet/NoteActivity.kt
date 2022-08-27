@@ -7,8 +7,11 @@ import android.view.MenuItem
 import android.widget.Toast
 import androidx.lifecycle.Observer
 import androidx.lifecycle.ViewModelProvider
+import androidx.lifecycle.lifecycleScope
 import com.amir.englishgrammercheatsheet.databinding.ActivityNoteBinding
 import com.amir.englishgrammercheatsheet.room.*
+import kotlinx.coroutines.launch
+
 class NoteActivity : BaseActivity() {
     lateinit var binding: ActivityNoteBinding
     lateinit var dao: NoteDAO
@@ -26,30 +29,35 @@ class NoteActivity : BaseActivity() {
         toolbarDisplayingSetUp(binding.toolbar, "notepad")
         //show the list oft notes
         displaySubscribersList()
+
+        receiveSentDataFromNoteFragmentToUpdate()
+
     }
 
     private fun displaySubscribersList() {
         noteViewModel.getSavedNotes().observe(this, Observer {
             Log.i("My Tag", it.toString() + "\n")
-            receiveSentDataFromNoteFragmentToUpdate()
+            // receiveSentDataFromNoteFragmentToUpdate()
+
         })
     }
 
     private fun receiveSentDataFromNoteFragmentToUpdate(): Unit {
-
+        val idFromNoteFragment = intent.getStringExtra("id")
         val titleFromNoteFragment = intent.getStringExtra("title")
         val descriptionFromNoteFragment = intent.getStringExtra("description")
+        binding.tvId.setText(idFromNoteFragment)
         binding.etTitle.setText(titleFromNoteFragment)
         binding.etDescription.setText(descriptionFromNoteFragment)
-        noteViewModel.saveOrUpdateButtonText.value = "Update"
-        // viewModel.initUpdate()
+
+
     }
 
     private fun implementViewModel() {
         // start implement viewModel
         dao = NoteDatabase.getInstance(application).noteDAO
-         repository = NoteRepository(dao)
-         factory = NoteViewModelFactory(repository)
+        repository = NoteRepository(dao)
+        factory = NoteViewModelFactory(repository)
         noteViewModel = ViewModelProvider(this, factory).get(NoteViewModel::class.java)
         //end of viewModel Implement
     }
@@ -63,6 +71,10 @@ class NoteActivity : BaseActivity() {
 
     //making menu bar onClickable
     override fun onOptionsItemSelected(item: MenuItem): Boolean {
+        val title = binding.etTitle.text.toString()
+        val description = binding.etDescription.text.toString()
+        val id = Integer.parseInt(binding.tvId.text.toString())
+
         when (item.itemId) {
             R.id.action_save -> {
                 Toast.makeText(this, "save is clicked", Toast.LENGTH_LONG).show()
@@ -71,12 +83,24 @@ class NoteActivity : BaseActivity() {
                 noteViewModel.saveOrUpdate()
             }
             R.id.action_delete -> {
+
                 Toast.makeText(this, "delete is clicked", Toast.LENGTH_LONG).show()
+
+                noteViewModel.delete(NoteEntity(id, title, description))
+                onBackPressed()
+            }
+
+            R.id.action_update -> {
+                Toast.makeText(this, "update is clicked", Toast.LENGTH_LONG).show()
+                Toast.makeText(this, "update $id is clicked", Toast.LENGTH_LONG).show()
+                noteViewModel.update(NoteEntity(id, title, description))
+//                lifecycleScope.launch {
+//                   repository.update(NoteEntity(id  , title, description))
+//               }
             }
         }
         return super.onOptionsItemSelected(item)
     }
-
 
 
 }

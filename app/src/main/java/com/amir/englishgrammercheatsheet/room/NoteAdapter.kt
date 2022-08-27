@@ -29,6 +29,7 @@ class MViewHolder(private val binding: NoteRowBinding) : RecyclerView.ViewHolder
 
 
     fun bind(noteEntity: NoteEntity) {
+        binding.tvId.text = noteEntity.id.toString()
         binding.tvTitle.text = noteEntity.title
         binding.tvDescription.text = noteEntity.description
     }
