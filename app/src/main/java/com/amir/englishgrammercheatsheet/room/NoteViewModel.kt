@@ -23,7 +23,7 @@ class NoteViewModel(private val repository: NoteRepository) : ViewModel() {
     fun saveOrUpdate() {
         val title = inputTitle.value!!
         val description = inputDescription.value!!
-        insert(NoteEntity(0, title, description))
+        insert(NoteEntity(0, title = title, description = description))
         inputTitle.value = ""
         inputDescription.value = ""
 
@@ -31,12 +31,14 @@ class NoteViewModel(private val repository: NoteRepository) : ViewModel() {
 
 
     fun insert(noteEntity: NoteEntity): Job = viewModelScope.launch {
-        val newRowId: Long = repository.insert(noteEntity)
-        if (newRowId > -1) {
-            statusMessage.value = Event("Subscriber inserted successfully $newRowId")
-        } else {
-            statusMessage.value = Event("Error Occurred")
-        }
+//        val newRowId: Long = repository.insert(noteEntity)
+//        if (newRowId > -1) {
+//            statusMessage.value = Event("Subscriber inserted successfully $newRowId")
+//        } else {
+//            statusMessage.value = Event("Error Occurred")
+//        }
+       // repository.insert(NoteEntity(title = inputTitle.value.toString(), description = inputDescription.value.toString()))
+        repository.insert(noteEntity)
     }
 
     @SuppressLint("NullSafeMutableLiveData")

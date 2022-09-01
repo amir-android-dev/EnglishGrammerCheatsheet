@@ -28,19 +28,20 @@ class NoteActivity : BaseActivity() {
         //implement toolbar
         toolbarDisplayingSetUp(binding.toolbar, "notepad")
         //show the list oft notes
-        displaySubscribersList()
+       // displaySubscribersList()
 
         receiveSentDataFromNoteFragmentToUpdate()
 
+
     }
 
-    private fun displaySubscribersList() {
-        noteViewModel.getSavedNotes().observe(this, Observer {
-            Log.i("My Tag", it.toString() + "\n")
-            // receiveSentDataFromNoteFragmentToUpdate()
-
-        })
-    }
+//    private fun displaySubscribersList() {
+//        noteViewModel.getSavedNotes().observe(this, Observer {
+//            Log.i("My Tag", it.toString() + "\n")
+//            noteViewModel.inputTitle.value = binding.etTitle.text.toString()
+//            noteViewModel.inputDescription.value = binding.etDescription.text.toString()
+//        })
+//    }
 
     private fun receiveSentDataFromNoteFragmentToUpdate(): Unit {
         val idFromNoteFragment = intent.getStringExtra("id")
@@ -73,27 +74,35 @@ class NoteActivity : BaseActivity() {
     override fun onOptionsItemSelected(item: MenuItem): Boolean {
         val title = binding.etTitle.text.toString()
         val description = binding.etDescription.text.toString()
-        val id = Integer.parseInt(binding.tvId.text.toString())
+        val id  = binding.tvId.text.toString()
 
         when (item.itemId) {
             R.id.action_save -> {
                 Toast.makeText(this, "save is clicked", Toast.LENGTH_LONG).show()
-                noteViewModel.inputTitle.value = binding.etTitle.text.toString()
-                noteViewModel.inputDescription.value = binding.etDescription.text.toString()
-                noteViewModel.saveOrUpdate()
+                if(title.isEmpty() || description.isEmpty()){
+                    Toast.makeText(this, "The Title or Note filed is empty.", Toast.LENGTH_LONG).show()
+                }
+                else {
+                    noteViewModel.inputTitle.value = title
+                    noteViewModel.inputDescription.value = description
+                    noteViewModel.saveOrUpdate()
+                }
             }
             R.id.action_delete -> {
+              val idToDelete  = Integer.parseInt(id)
 
                 Toast.makeText(this, "delete is clicked", Toast.LENGTH_LONG).show()
 
-                noteViewModel.delete(NoteEntity(id, title, description))
+                noteViewModel.delete(NoteEntity(idToDelete, title, description))
                 onBackPressed()
             }
 
             R.id.action_update -> {
+                val idToUpdate  = Integer.parseInt(id)
+
                 Toast.makeText(this, "update is clicked", Toast.LENGTH_LONG).show()
                 Toast.makeText(this, "update $id is clicked", Toast.LENGTH_LONG).show()
-                noteViewModel.update(NoteEntity(id, title, description))
+               noteViewModel.update(NoteEntity(idToUpdate, title, description))
 //                lifecycleScope.launch {
 //                   repository.update(NoteEntity(id  , title, description))
 //               }
