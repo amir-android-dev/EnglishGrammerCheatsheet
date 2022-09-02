@@ -81,12 +81,14 @@ class NoteFragment : BaseFragment(), Toolbar.OnMenuItemClickListener {
                 intent.putExtra("id",noteEntity[viewHolder.adapterPosition].id.toString())
                 intent.putExtra("title", noteEntity[viewHolder.adapterPosition].title)
                 intent.putExtra("description", noteEntity[viewHolder.adapterPosition].description)
+                intent.putExtra("icon",R.drawable.ic_edit_24)
                 startActivity(intent)
             }
         }
         val itemTouchHelper = ItemTouchHelper(swipeToEditCallback)
         itemTouchHelper.attachToRecyclerView(binding.rvNote)
     }
+    //
 
     override fun onMenuItemClick(item: MenuItem?): Boolean {
         when (item?.itemId) {

@@ -1,16 +1,12 @@
 package com.amir.englishgrammercheatsheet
 
 import android.os.Bundle
-import android.util.Log
 import android.view.Menu
 import android.view.MenuItem
 import android.widget.Toast
-import androidx.lifecycle.Observer
 import androidx.lifecycle.ViewModelProvider
-import androidx.lifecycle.lifecycleScope
 import com.amir.englishgrammercheatsheet.databinding.ActivityNoteBinding
 import com.amir.englishgrammercheatsheet.room.*
-import kotlinx.coroutines.launch
 
 class NoteActivity : BaseActivity() {
     lateinit var binding: ActivityNoteBinding
@@ -18,6 +14,8 @@ class NoteActivity : BaseActivity() {
     lateinit var repository: NoteRepository
     lateinit var factory: NoteViewModelFactory
     lateinit var noteViewModel: NoteViewModel
+    private var idFromNoteFragment: String? = null
+    var iconFromNoteFragment: Int? = null
     override fun onCreate(savedInstanceState: Bundle?) {
         super.onCreate(savedInstanceState)
         binding = ActivityNoteBinding.inflate(layoutInflater)
@@ -27,12 +25,8 @@ class NoteActivity : BaseActivity() {
         implementViewModel()
         //implement toolbar
         toolbarDisplayingSetUp(binding.toolbar, "notepad")
-        //show the list oft notes
-       // displaySubscribersList()
 
         receiveSentDataFromNoteFragmentToUpdate()
-
-
     }
 
 //    private fun displaySubscribersList() {
@@ -43,10 +37,13 @@ class NoteActivity : BaseActivity() {
 //        })
 //    }
 
-    private fun receiveSentDataFromNoteFragmentToUpdate(): Unit {
-        val idFromNoteFragment = intent.getStringExtra("id")
+    private fun receiveSentDataFromNoteFragmentToUpdate() {
+        // val idFromNoteFragment = intent.getStringExtra("id")
+        idFromNoteFragment = intent.getStringExtra("id")
         val titleFromNoteFragment = intent.getStringExtra("title")
         val descriptionFromNoteFragment = intent.getStringExtra("description")
+        iconFromNoteFragment = intent.getIntExtra("icon", R.drawable.ic_edit_24)
+
         binding.tvId.setText(idFromNoteFragment)
         binding.etTitle.setText(titleFromNoteFragment)
         binding.etDescription.setText(descriptionFromNoteFragment)
@@ -67,6 +64,13 @@ class NoteActivity : BaseActivity() {
     //without implementing toolbar will not work
     override fun onCreateOptionsMenu(menu: Menu): Boolean {
         menuInflater.inflate(R.menu.bar_note_activity, menu)
+        //changing the icon of menu
+        if (idFromNoteFragment == binding.tvId.text.toString()) {
+            var save = menu.findItem(R.id.action_save)
+            save.setIcon(R.drawable.ic_edit_24)
+            var delete = menu.findItem(R.id.action_delete)
+            delete.isVisible = true
+        }
         return true
     }
 
@@ -74,39 +78,55 @@ class NoteActivity : BaseActivity() {
     override fun onOptionsItemSelected(item: MenuItem): Boolean {
         val title = binding.etTitle.text.toString()
         val description = binding.etDescription.text.toString()
-        val id  = binding.tvId.text.toString()
+        val id = binding.tvId.text.toString()
 
         when (item.itemId) {
             R.id.action_save -> {
-                Toast.makeText(this, "save is clicked", Toast.LENGTH_LONG).show()
-                if(title.isEmpty() || description.isEmpty()){
-                    Toast.makeText(this, "The Title or Note filed is empty.", Toast.LENGTH_LONG).show()
-                }
-                else {
-                    noteViewModel.inputTitle.value = title
-                    noteViewModel.inputDescription.value = description
-                    noteViewModel.saveOrUpdate()
+                if (title.isEmpty() || description.isEmpty()) {
+                    Toast.makeText(this, "The Title or Note filed is empty.", Toast.LENGTH_LONG)
+                        .show()
+                } else {
+                    if (idFromNoteFragment.isNullOrBlank() && id != idFromNoteFragment) {
+                        noteViewModel.inputTitle.value = title
+                        noteViewModel.inputDescription.value = description
+                        noteViewModel.saveOrUpdate()
+                        binding.etTitle.text!!.clear()
+                        binding.etDescription.text!!.clear()
+                        Toast.makeText(this, "$title is saved.", Toast.LENGTH_LONG).show()
+                        //item.setIcon(R.drawable.ic_edit_24)
+                    } else if (idFromNoteFragment.equals(id) && iconFromNoteFragment == R.drawable.ic_edit_24) {
+                        val idToUpdate = Integer.parseInt(id)
+                        noteViewModel.update(NoteEntity(idToUpdate, title, description))
+                        Toast.makeText(this, "$title is updated.", Toast.LENGTH_LONG).show()
+                    }
                 }
             }
             R.id.action_delete -> {
-              val idToDelete  = Integer.parseInt(id)
 
-                Toast.makeText(this, "delete is clicked", Toast.LENGTH_LONG).show()
+                if (idFromNoteFragment.equals(id)) {
+                    val idToDelete = Integer.parseInt(id)
+                    Toast.makeText(this, "delete is clicked", Toast.LENGTH_LONG).show()
 
-                noteViewModel.delete(NoteEntity(idToDelete, title, description))
-                onBackPressed()
+                    noteViewModel.delete(NoteEntity(idToDelete, title, description))
+                    onBackPressed()
+                } else if (idFromNoteFragment.isNullOrBlank() && id != idFromNoteFragment) {
+
+                }
+
+
             }
 
-            R.id.action_update -> {
-                val idToUpdate  = Integer.parseInt(id)
+            /* R.id.action_update -> {
+                 val idToUpdate = Integer.parseInt(id)
 
-                Toast.makeText(this, "update is clicked", Toast.LENGTH_LONG).show()
-                Toast.makeText(this, "update $id is clicked", Toast.LENGTH_LONG).show()
-               noteViewModel.update(NoteEntity(idToUpdate, title, description))
-//                lifecycleScope.launch {
-//                   repository.update(NoteEntity(id  , title, description))
-//               }
-            }
+                 Toast.makeText(this, "update is clicked", Toast.LENGTH_LONG).show()
+                 Toast.makeText(this, "update $id is clicked", Toast.LENGTH_LONG).show()
+                 noteViewModel.update(NoteEntity(idToUpdate, title, description))
+
+                 /*  lifecycleScope.launch {
+                    repository.update(NoteEntity(id  , title, description))
+                 }*/
+             }*/
         }
         return super.onOptionsItemSelected(item)
     }
