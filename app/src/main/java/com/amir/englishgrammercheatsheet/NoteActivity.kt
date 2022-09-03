@@ -1,11 +1,15 @@
 package com.amir.englishgrammercheatsheet
 
+import android.content.Intent
 import android.os.Bundle
 import android.view.Menu
 import android.view.MenuItem
+import android.view.View
 import android.widget.Toast
+import androidx.fragment.app.FragmentManager
 import androidx.lifecycle.ViewModelProvider
 import com.amir.englishgrammercheatsheet.databinding.ActivityNoteBinding
+import com.amir.englishgrammercheatsheet.presentation.note.NoteFragment
 import com.amir.englishgrammercheatsheet.room.*
 
 class NoteActivity : BaseActivity() {
@@ -47,8 +51,6 @@ class NoteActivity : BaseActivity() {
         binding.tvId.setText(idFromNoteFragment)
         binding.etTitle.setText(titleFromNoteFragment)
         binding.etDescription.setText(descriptionFromNoteFragment)
-
-
     }
 
     private fun implementViewModel() {
@@ -66,9 +68,9 @@ class NoteActivity : BaseActivity() {
         menuInflater.inflate(R.menu.bar_note_activity, menu)
         //changing the icon of menu
         if (idFromNoteFragment == binding.tvId.text.toString()) {
-            var save = menu.findItem(R.id.action_save)
+            val save = menu.findItem(R.id.action_save)
             save.setIcon(R.drawable.ic_edit_24)
-            var delete = menu.findItem(R.id.action_delete)
+            val delete = menu.findItem(R.id.action_delete)
             delete.isVisible = true
         }
         return true
@@ -108,12 +110,12 @@ class NoteActivity : BaseActivity() {
                     Toast.makeText(this, "delete is clicked", Toast.LENGTH_LONG).show()
 
                     noteViewModel.delete(NoteEntity(idToDelete, title, description))
-                    onBackPressed()
+                    //onBackPressed()
+                    var intent = Intent(this, MainActivity::class.java)
+                    intent.putExtra("delete", "DELETE")
+                    startActivity(intent)
                 } else if (idFromNoteFragment.isNullOrBlank() && id != idFromNoteFragment) {
-
                 }
-
-
             }
 
             /* R.id.action_update -> {

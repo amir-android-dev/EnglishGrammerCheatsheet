@@ -23,8 +23,8 @@ class MainActivity : BaseActivity() {
         binding.rbGrammar.setOnClickListener {
             loadFragment(ContentFragment())
             binding.rbNote.isChecked = false
-
         }
+
         binding.rbNote.setOnClickListener {
             loadFragment(NoteFragment())
             binding.rbGrammar.isChecked = false
@@ -33,14 +33,25 @@ class MainActivity : BaseActivity() {
 
     override fun onStart() {
         loadFragment(ContentFragment())
+        openTheNoteFragmentAfterDeleteTheNote()
         super.onStart()
     }
 
     override fun onBackPressed() {
-        val fragment =
-            this.supportFragmentManager.findFragmentById(R.id.ll_fragment_content_container)
-        (fragment as? IOnBackPressed)?.onBackPressed()?.not()?.let {
-            super.onBackPressed()
+//        val fragment =
+//            this.supportFragmentManager.findFragmentById(R.id.ll_fragment_content_container)
+//        (fragment as? IOnBackPressed)?.onBackPressed()?.not()?.let {
+//            super.onBackPressed()
+//        }
+
+    }
+
+    fun openTheNoteFragmentAfterDeleteTheNote() {
+        val delete = intent.getStringExtra("delete")
+        if (delete.equals("DELETE")) {
+            loadFragment(NoteFragment())
+            binding.rbGrammar.isChecked = false
+            binding.rbNote.isChecked = true
         }
     }
 
