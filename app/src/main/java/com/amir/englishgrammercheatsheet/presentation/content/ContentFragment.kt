@@ -18,7 +18,7 @@ import com.amir.englishgrammercheatsheet.presentation.objects.GrammerObject
 import com.google.android.material.navigation.NavigationView
 
 
-class ContentFragment : BaseFragment(), IOnBackPressed, NavigationView.OnNavigationItemSelectedListener{
+class ContentFragment : BaseFragment(), NavigationView.OnNavigationItemSelectedListener{
 
     private lateinit var binding: FragmentContentBinding
     private val contentList = ContentObject.contentsModel
@@ -132,17 +132,6 @@ class ContentFragment : BaseFragment(), IOnBackPressed, NavigationView.OnNavigat
             }
         }
         return true
-    }
-
-    override fun onBackPressed(): Boolean {
-        return if (binding.rvGrammarContent.visibility == View.GONE) {
-            binding.tvGrammarTitle.visibility = View.GONE
-            binding.tvGrammarDescription.visibility = View.GONE
-            binding.rvGrammarContent.visibility = View.VISIBLE
-            true
-        } else {
-            true
-        }
     }
 
 }

@@ -5,12 +5,15 @@ import android.content.Intent
 import android.os.Bundle
 import android.util.Log
 import android.view.*
-import android.widget.Toast
 import androidx.appcompat.widget.Toolbar
 import androidx.lifecycle.Observer
 import androidx.lifecycle.ViewModelProvider
 import androidx.recyclerview.widget.*
 import com.amir.englishgrammercheatsheet.NoteActivity
+import com.amir.englishgrammercheatsheet.NoteActivity.Companion.DESCRIPTION
+import com.amir.englishgrammercheatsheet.NoteActivity.Companion.ICON
+import com.amir.englishgrammercheatsheet.NoteActivity.Companion.ID
+import com.amir.englishgrammercheatsheet.NoteActivity.Companion.TITLE
 import com.amir.englishgrammercheatsheet.R
 import com.amir.englishgrammercheatsheet.databinding.FragmentNoteBinding
 import com.amir.englishgrammercheatsheet.presentation.grammer.BaseFragment
@@ -78,17 +81,17 @@ class NoteFragment : BaseFragment(), Toolbar.OnMenuItemClickListener {
             override fun onSwiped(viewHolder: RecyclerView.ViewHolder, direction: Int) {
                 //sending data to NoteActivity
                 val intent = Intent(requireActivity(), NoteActivity::class.java)
-                intent.putExtra("id",noteEntity[viewHolder.adapterPosition].id.toString())
-                intent.putExtra("title", noteEntity[viewHolder.adapterPosition].title)
-                intent.putExtra("description", noteEntity[viewHolder.adapterPosition].description)
-                intent.putExtra("icon",R.drawable.ic_edit_24)
+                intent.putExtra(ID,noteEntity[viewHolder.adapterPosition].id.toString())
+                intent.putExtra(TITLE, noteEntity[viewHolder.adapterPosition].title)
+                intent.putExtra(DESCRIPTION, noteEntity[viewHolder.adapterPosition].description)
+                intent.putExtra(ICON,R.drawable.ic_edit_24)
                 startActivity(intent)
             }
         }
         val itemTouchHelper = ItemTouchHelper(swipeToEditCallback)
         itemTouchHelper.attachToRecyclerView(binding.rvNote)
     }
-    //
+
 
     override fun onMenuItemClick(item: MenuItem?): Boolean {
         when (item?.itemId) {

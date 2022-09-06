@@ -4,12 +4,9 @@ import android.content.Intent
 import android.os.Bundle
 import android.view.Menu
 import android.view.MenuItem
-import android.view.View
 import android.widget.Toast
-import androidx.fragment.app.FragmentManager
 import androidx.lifecycle.ViewModelProvider
 import com.amir.englishgrammercheatsheet.databinding.ActivityNoteBinding
-import com.amir.englishgrammercheatsheet.presentation.note.NoteFragment
 import com.amir.englishgrammercheatsheet.room.*
 
 class NoteActivity : BaseActivity() {
@@ -20,6 +17,7 @@ class NoteActivity : BaseActivity() {
     lateinit var noteViewModel: NoteViewModel
     private var idFromNoteFragment: String? = null
     var iconFromNoteFragment: Int? = null
+    var onBackControll = false
     override fun onCreate(savedInstanceState: Bundle?) {
         super.onCreate(savedInstanceState)
         binding = ActivityNoteBinding.inflate(layoutInflater)
@@ -33,20 +31,13 @@ class NoteActivity : BaseActivity() {
         receiveSentDataFromNoteFragmentToUpdate()
     }
 
-//    private fun displaySubscribersList() {
-//        noteViewModel.getSavedNotes().observe(this, Observer {
-//            Log.i("My Tag", it.toString() + "\n")
-//            noteViewModel.inputTitle.value = binding.etTitle.text.toString()
-//            noteViewModel.inputDescription.value = binding.etDescription.text.toString()
-//        })
-//    }
 
     private fun receiveSentDataFromNoteFragmentToUpdate() {
         // val idFromNoteFragment = intent.getStringExtra("id")
-        idFromNoteFragment = intent.getStringExtra("id")
-        val titleFromNoteFragment = intent.getStringExtra("title")
-        val descriptionFromNoteFragment = intent.getStringExtra("description")
-        iconFromNoteFragment = intent.getIntExtra("icon", R.drawable.ic_edit_24)
+        idFromNoteFragment = intent.getStringExtra(ID)
+        val titleFromNoteFragment = intent.getStringExtra(TITLE)
+        val descriptionFromNoteFragment = intent.getStringExtra(DESCRIPTION)
+        iconFromNoteFragment = intent.getIntExtra(ICON, R.drawable.ic_edit_24)
 
         binding.tvId.setText(idFromNoteFragment)
         binding.etTitle.setText(titleFromNoteFragment)
@@ -87,6 +78,8 @@ class NoteActivity : BaseActivity() {
                 if (title.isEmpty() || description.isEmpty()) {
                     Toast.makeText(this, "The Title or Note filed is empty.", Toast.LENGTH_LONG)
                         .show()
+                   controlOnBackPressedForEmptyNoteAndUpdate()
+
                 } else {
                     if (idFromNoteFragment.isNullOrBlank() && id != idFromNoteFragment) {
                         noteViewModel.inputTitle.value = title
@@ -95,13 +88,15 @@ class NoteActivity : BaseActivity() {
                         binding.etTitle.text!!.clear()
                         binding.etDescription.text!!.clear()
                         Toast.makeText(this, "$title is saved.", Toast.LENGTH_LONG).show()
-                        //item.setIcon(R.drawable.ic_edit_24)
+
                     } else if (idFromNoteFragment.equals(id) && iconFromNoteFragment == R.drawable.ic_edit_24) {
                         val idToUpdate = Integer.parseInt(id)
                         noteViewModel.update(NoteEntity(idToUpdate, title, description))
                         Toast.makeText(this, "$title is updated.", Toast.LENGTH_LONG).show()
+                       controlOnBackPressedForEmptyNoteAndUpdate()
                     }
                 }
+
             }
             R.id.action_delete -> {
 
@@ -111,9 +106,7 @@ class NoteActivity : BaseActivity() {
 
                     noteViewModel.delete(NoteEntity(idToDelete, title, description))
                     //onBackPressed()
-                    var intent = Intent(this, MainActivity::class.java)
-                    intent.putExtra("delete", "DELETE")
-                    startActivity(intent)
+                    sendingAWordToMainActivityInOrderToControlTheOnBackPressed()
                 } else if (idFromNoteFragment.isNullOrBlank() && id != idFromNoteFragment) {
                 }
             }
@@ -133,5 +126,29 @@ class NoteActivity : BaseActivity() {
         return super.onOptionsItemSelected(item)
     }
 
+    private fun sendingAWordToMainActivityInOrderToControlTheOnBackPressed() {
+        val intent = Intent(this, MainActivity::class.java)
+        intent.putExtra(myKey, "MYKEY")
+        startActivity(intent)
+    }
+
+    override fun onBackPressed() {
+        onBackControll = true
+        sendingAWordToMainActivityInOrderToControlTheOnBackPressed()
+        super.onBackPressed()
+    }
+    private fun controlOnBackPressedForEmptyNoteAndUpdate(){
+        if(onBackControll==true){
+            onBackPressed()
+        }
+    }
+
+    companion object {
+        const val myKey = "myKey"
+        const val ID = "id"
+        const val TITLE = "title"
+        const val DESCRIPTION = "description"
+        const val ICON = "icon"
+    }
 
 }
